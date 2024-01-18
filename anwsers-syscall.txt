@@ -1,0 +1,11 @@
+Q: Looking at the backtrace output, which function called syscall?
+A: usertrap()
+
+Q:What is the value of p->trapframe->a7 and what does that value represent?
+A: SYS_exec
+
+Q:What was the previous mode that the CPU was in?
+A:VS-mode
+
+Q:Write down the assembly instruction the kernel is panicing at. Which register corresponds to the variable num?
+A:a5
