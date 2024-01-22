@@ -20,6 +20,7 @@ sys_exit(void)
 uint64
 sys_getpid(void)
 {
+  sgetpid();
   return myproc()->pid;
 }
 
@@ -81,6 +82,20 @@ int
 sys_pgaccess(void)
 {
   // lab pgtbl: your code here.
+  int* fpage;        //starting virtual address of the first user page
+  int  pagenum;        //the number of pages
+  int bitmask_buffer[8];  //store the results into a bitmask 
+
+  if(argaddr(0,*fpage) < 0){
+    return -1;
+  }
+  if(argint(1,pagenum) < 0){
+    return -1;
+  }
+
+  if(argaddr(2,&bitmask_buffer) < 0){
+    return -1;
+  }
   return 0;
 }
 #endif
@@ -107,3 +122,4 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+

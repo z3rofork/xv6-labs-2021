@@ -12,6 +12,8 @@ struct proc proc[NPROC];
 
 struct proc *initproc;
 
+struct usyscall *usyscall;
+
 int nextpid = 1;
 struct spinlock pid_lock;
 
@@ -653,4 +655,30 @@ procdump(void)
     printf("%d %s %s", p->pid, state, p->name);
     printf("\n");
   }
+}
+
+
+int
+sgetpid(void){
+  
+  struct proc *p = proc;
+  pagetable_t pagetable;
+
+  //create empty page table
+  pagetable = uvmcreate();
+  if(pagetable == 0)
+    return -1;
+  usyscall->pid = p->pid;
+  if(mappages(pagetable,USYSCALL,PGSIZE,
+              (uint64)(usyscall),PTE_R)< 0){
+    uvmfree(pagetable,0);
+    return -1;
+  }
+  return usyscall->pid;
+}
+
+
+int
+pgaccess(int* fpage,int pagenum,int* bitmask_buffer){
+  
 }
